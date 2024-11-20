@@ -1,0 +1,11 @@
+
+CREATE DATABASE bd_empresa;
+
+USE bd_empresa;
+
+CREATE TABLE tb_funcionarios (
+    matricula INT AUTO_INCREMENT PRIMARY KEY, 
+    nome VARCHAR(255) NOT NULL,           
+    setor ENUM('Financeiro', 'Administrativo', 'Suporte') NOT NULL,
+    situacao ENUM('Ativo', 'Inativo') NOT NULL DEFAULT 'Ativo'    
+);

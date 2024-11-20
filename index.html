@@ -15,8 +15,11 @@
     <button id="btnGerenciar" class="botoes">Gerenciar</button>
 
     <div id="conteudo">
+        <p>Administrativo</p>
         <div id="cxadm"></div>
+        <p>Financeiro</p>
         <div id="cxfin"></div>
+        <p>Suporte</p>
         <div id="cxsup"></div>
     </div>
 
@@ -49,6 +52,10 @@
                         alert(resposta);
                         $("#cxcadatra").hide();
                         $("#conteudo").show();
+
+                        $("#cxadm").load("consultar_adm.php");
+                        $("#cxfin").load("consultar_fin.php");
+                        $("#cxsup").load("consultar_sup.php");
 
 
                     },
@@ -100,6 +107,9 @@
                     success: function (resposta) {
                         alert(resposta);
                         $("#cxEditar").hide();
+                        $("#cxadm").load("consultar_adm.php");
+                        $("#cxfin").load("consultar_fin.php");
+                        $("#cxsup").load("consultar_sup.php");
 
                     },
                     error: function () {
@@ -110,7 +120,7 @@
                 });
             });
             $("#btnDeletar").click(function () {
-       
+
                 var matricula_escolhida = $("#caixa_matricula2").val();
                 $.ajax({
                     url: "deletar.php",
@@ -119,6 +129,9 @@
                     success: function (resposta) {
                         alert(resposta);
                         $("#cxEditar").hide();
+                        $("#cxadm").load("consultar_adm.php");
+                        $("#cxfin").load("consultar_fin.php");
+                        $("#cxsup").load("consultar_sup.php");
                     },
                     error: function () {
                         alert("Erro ao tentar deletar o funcionário.");

@@ -16,8 +16,7 @@ try {
                 $setor = $item['setor'];
                 $situacao = $item['situacao'];
                 echo "
-                <h1>Suporte</h1>
-                      <div class='cartoes'>
+                         <div class='cartoes'>
                       
                             <h3>Matrícula: <span class='matricula_func'>$matricula</span></h3>
                             <p>Nome: <span class='nome_func'>$nome</span></p>
