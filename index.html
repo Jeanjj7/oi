@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="estilo.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btnNova" class="botoes">Nova</button>
+    <button id="btnGerenciar" class="botoes">Gerenciar</button>
+
+    <div id="conteudo">
+        <div id="cxadm"></div>
+        <div id="cxfin"></div>
+        <div id="cxsup"></div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#cxcadatra").hide();
+            $("#cxEditar").hide();
+
+            $("#bntFecharcadastra").click(function () {
+                $("#cxcadatra").hide();
+            });
+            $("#bntFechareditar").click(function () {
+                $("#cxEditar").hide();
+            });
+
+
+            $("#btnCadastra").click(function () {
+
+                var nome_capturado = $("#caixa_nome").val();
+                var setor_capturado = $("#caixa_setor").val();
+
+                $.ajax({
+                    url: "cadastrar.php",
+                    method: "POST",
+                    data: {
+                        nome: nome_capturado,
+                        setor: setor_capturado
+                    },
+                    success: function (resposta) {
+                        alert(resposta);
+                        $("#cxcadatra").hide();
+                        $("#conteudo").show();
+
+
+                    },
+                    error: function () {
+                        alert("Erro ao cadastrar");
+                    }
+                });
+            });
+
+        });
+
+
+        $("#btnNova").click(function () {
+            $("#cxcadatra").show();
+
+        });
+
+        $(document).on("click", ".cartoes", function () {
+
+            $("#cxEditar").show();
+            var matricula = $(this).find(".matricula_func").text();
+            $("#caixa_matricula2").val(matricula);
+
+            var nome = $(this).find(".nome_func").text();
+            $("#caixa_nome2").val(nome);
+
+            var setor = $(this).find(".setor_func").text();
+            $("#caixa_setor2").val(setor);
+
+            var situacao = $(this).find(".situacao_func").text();
+            $("#caixa_situacao2").val(situacao);
+
+            $("#btnSalvarAlteracoes").click(function () {
+
+                var matricula_escolhida = $("#caixa_matricula2").val();
+                var nome_escolhido = $("#caixa_nome2").val();
+                var setor_escolhido = $("#caixa_setor2").val();
+                var situacao_escolhida = $("#caixa_situacao2").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "atualizar.php",
+                    data: {
+                        matricula: matricula_escolhida,
+                        nome: nome_escolhido,
+                        setor: setor_escolhido,
+                        situacao: situacao_escolhida
+                    },
+                    success: function (resposta) {
+                        alert(resposta);
+                        $("#cxEditar").hide();
+
+                    },
+                    error: function () {
+
+                        alert("Erro ao atualizar");
+
+                    }
+                });
+            });
+            $("#btnDeletar").click(function () {
+       
+                var matricula_escolhida = $("#caixa_matricula2").val();
+                $.ajax({
+                    url: "deletar.php",
+                    type: "POST",
+                    data: { matricula: matricula_escolhida },
+                    success: function (resposta) {
+                        alert(resposta);
+                        $("#cxEditar").hide();
+                    },
+                    error: function () {
+                        alert("Erro ao tentar deletar o funcionário.");
+
+                    }
+                });
+            });
+
+
+        });
+
+        $("#btnGerenciar").click(function () {
+
+            $("#cxadm").load("consultar_adm.php");
+            $("#cxfin").load("consultar_fin.php");
+            $("#cxsup").load("consultar_sup.php");
+
+        });
+    </script>
+
+    <div class="tela_escura" id="cxcadatra">
+        <div class="formulario">
+            <button id="bntFecharcadastra" style="
+            background-color: #0400ff; 
+            color: white; 
+            border: none; 
+            border-radius: 50%; 
+            width: 30px; 
+            height: 30px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.2s;
+        ">x</button><br><br>
+            Nome: <br>
+            <input type="text" id="caixa_nome"><br><br>
+
+            Setor: <br>
+            <select id="caixa_setor">
+                <option value="">Selecione</option>
+                <option value="Financeiro">Financeiro</option>
+                <option value="Administrativo">Administrativo</option>
+                <option value="Suporte">Suporte</option>
+            </select><br><br>
+
+
+            <button class="botoes" id="btnCadastra">Cadastrar</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="tela_escura" id="cxEditar">
+        <div class="formulario">
+            <button id="bntFechareditar" style="
+            background-color: #0400ff; 
+            color: white; 
+            border: none; 
+            border-radius: 50%; 
+            width: 30px; 
+            height: 30px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.2s;
+        ">x</button><br><br>
+            <h1>Editar funcionário</h1>
+            Matrícula: <br>
+            <input type="number" id="caixa_matricula2" disabled><br><br>
+
+            Nome: <br>
+            <input type="text" id="caixa_nome2"><br><br>
+
+            Setor: <br>
+            <select id="caixa_setor2">
+                <option value="">Selecione</option>
+                <option value="Financeiro">Financeiro</option>
+                <option value="Administrativo">Administrativo</option>
+                <option value="Suporte">Suporte</option>
+            </select><br><br>
+
+
+            Situação: <br>
+            <select id="caixa_situacao2">
+                <option value="">Selecione</option>
+                <option value="Ativo">Ativo</option>
+                <option value="Inativo">Inativo</option>
+            </select><br><br>
+
+
+            <button class="botoes1" id="btnSalvarAlteracoes">Salvar alterações</button>
+            <button class="botoes1" id="btnDeletar">Deletar</button>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
