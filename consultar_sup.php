@@ -9,7 +9,7 @@ $consultar = $pdo->prepare($sql);
 try {
     $consultar->execute();
     $resultados = $consultar->fetchAll(PDO::FETCH_ASSOC);
-
+echo"<div class='azuk'><p>Suporte</p></div>";
             foreach ($resultados  as $item) {
                 $matricula = $item['matricula'];
                 $nome = $item['nome'];
