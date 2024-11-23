@@ -17,16 +17,79 @@
     <div id="conteudo">
 
         <div id="cxadm"></div>
-
         <div id="cxfin"></div>
-
         <div id="cxsup"></div>
+    </div>
+    
+    <div id="escurecer">
+        <img src="loading.gif">
+
     </div>
 
     <script>
         $(document).ready(function () {
+
+
+
+            $("#btnSalvarAlteracoes").click(function () {
+                $("#escurecer").show();
+                var matricula_escolhida = $("#caixa_matricula2").val();
+                var nome_escolhido = $("#caixa_nome2").val();
+                var setor_escolhido = $("#caixa_setor2").val();
+                var situacao_escolhida = $("#caixa_situacao2").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "atualizar.php",
+                    data: {
+                        matricula: matricula_escolhida,
+                        nome: nome_escolhido,
+                        setor: setor_escolhido,
+                        situacao: situacao_escolhida
+                    },
+                    success: function (resposta) {
+                        alert(resposta);
+                        $("#cxEditar").hide();
+                        $("#escurecer").hide();
+                        $("#cxadm").load("consultar_adm.php");
+                        $("#cxfin").load("consultar_fin.php");
+                        $("#cxsup").load("consultar_sup.php");
+
+                    },
+                    error: function () {
+
+                        alert("Erro ao atualizar");
+
+                    }
+                });
+            });
+            $("#btnDeletar").click(function () {
+                $("#escurecer").show();
+                var matricula_escolhida = $("#caixa_matricula2").val();
+                $.ajax({
+                    url: "deletar.php",
+                    type: "POST",
+                    data: { matricula: matricula_escolhida },
+                    success: function (resposta) {
+                        alert(resposta);
+                        $("#cxEditar").hide();
+                        $("#escurecer").hide();
+                        $("#cxadm").load("consultar_adm.php");
+                        $("#cxfin").load("consultar_fin.php");
+                        $("#cxsup").load("consultar_sup.php");
+                    },
+                    error: function () {
+                        alert("Erro ao tentar deletar o funcionário.");
+
+                    }
+                });
+            });
+
+
+
             $("#cxcadatra").hide();
             $("#cxEditar").hide();
+            $("#escurecer").hide();
 
             $("#bntFecharcadastra").click(function () {
                 $("#cxcadatra").hide();
@@ -37,7 +100,7 @@
 
 
             $("#btnCadastra").click(function () {
-
+                $("#escurecer").show();
                 var nome_capturado = $("#caixa_nome").val();
                 var setor_capturado = $("#caixa_setor").val();
 
@@ -52,7 +115,7 @@
                         alert(resposta);
                         $("#cxcadatra").hide();
                         $("#conteudo").show();
-
+                        $("#escurecer").hide();
                         $("#cxadm").load("consultar_adm.php");
                         $("#cxfin").load("consultar_fin.php");
                         $("#cxsup").load("consultar_sup.php");
@@ -74,8 +137,8 @@
         });
 
         $(document).on("click", ".cartoes", function () {
-
             $("#cxEditar").show();
+            
             var matricula = $(this).find(".matricula_func").text();
             $("#caixa_matricula2").val(matricula);
 
@@ -88,62 +151,15 @@
             var situacao = $(this).find(".situacao_func").text();
             $("#caixa_situacao2").val(situacao);
 
-            $("#btnSalvarAlteracoes").click(function () {
 
-                var matricula_escolhida = $("#caixa_matricula2").val();
-                var nome_escolhido = $("#caixa_nome2").val();
-                var setor_escolhido = $("#caixa_setor2").val();
-                var situacao_escolhida = $("#caixa_situacao2").val();
-
-                $.ajax({
-                    type: "POST",
-                    url: "atualizar.php",
-                    data: {
-                        matricula: matricula_escolhida,
-                        nome: nome_escolhido,
-                        setor: setor_escolhido,
-                        situacao: situacao_escolhida
-                    },
-                    success: function (resposta) {
-                        alert(resposta);
-                        $("#cxEditar").hide();
-                        $("#cxadm").load("consultar_adm.php");
-                        $("#cxfin").load("consultar_fin.php");
-                        $("#cxsup").load("consultar_sup.php");
-
-                    },
-                    error: function () {
-
-                        alert("Erro ao atualizar");
-
-                    }
-                });
-            });
-            $("#btnDeletar").click(function () {
-
-                var matricula_escolhida = $("#caixa_matricula2").val();
-                $.ajax({
-                    url: "deletar.php",
-                    type: "POST",
-                    data: { matricula: matricula_escolhida },
-                    success: function (resposta) {
-                        alert(resposta);
-                        $("#cxEditar").hide();
-                        $("#cxadm").load("consultar_adm.php");
-                        $("#cxfin").load("consultar_fin.php");
-                        $("#cxsup").load("consultar_sup.php");
-                    },
-                    error: function () {
-                        alert("Erro ao tentar deletar o funcionário.");
-
-                    }
-                });
-            });
 
 
         });
 
         $("#btnGerenciar").click(function () {
+            $("#cxadm").html("#escurecer");
+            $("#cxfin").html("#escurecer");
+            $("#cxsup").html("#escurecer");
 
             $("#cxadm").load("consultar_adm.php");
             $("#cxfin").load("consultar_fin.php");
